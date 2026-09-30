@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Node.js - Adrián</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>API Node.js</h1>
+    <h2>Practicante: Adrián</h2>
+    <p class="description">Proyecto backend con Node.js y Express sirviendo vistas estáticas y endpoints REST.</p>
+    
+    <div class="card">
+      <h3>Usuarios</h3>
+      <button id="btnCargar">Cargar Usuarios</button>
+      <ul id="listaUsuarios"></ul>
+    </div>
+
+    <div class="card">
+      <h3>Productos</h3>
+      <ul id="listaProductos"></ul>
+    </div>
+  </div>
+
+  <script>
+    async function obtenerUsuarios() {
+      try {
+        const response = await fetch('/usuarios');
+        const usuarios = await response.json();
+        const lista = document.getElementById('listaUsuarios');
+        lista.innerHTML = '';
+        usuarios.forEach(u => {
+          const li = document.createElement('li');
+          li.textContent = `${u.id} - ${u.nombre}`;
+          lista.appendChild(li);
+        });
+      } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+      }
+    }
+
+    async function obtenerProductos() {
+      try {
+        const response = await fetch('/productos');
+        const productos = await response.json();
+        const lista = document.getElementById('listaProductos');
+        lista.innerHTML = '';
+        productos.forEach(p => {
+          const li = document.createElement('li');
+          li.textContent = `${p.id} - ${p.nombre} ($${p.precio})`;
+          lista.appendChild(li);
+        });
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      }
+    }
+
+    document.getElementById('btnCargar').addEventListener('click', obtenerUsuarios);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      obtenerUsuarios();
+      obtenerProductos();
+    });
+  </script>
+</body>
+</html>
